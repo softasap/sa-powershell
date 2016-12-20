@@ -17,11 +17,11 @@ env:
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged"
     playbook: test.yml
-  - distribution: centos
-    version: 6
-    init: /sbin/init
-    run_opts: "--privileged"
-    playbook: test.yml
+  # - distribution: centos
+  #   version: 6
+  #   init: /sbin/init
+  #   run_opts: "--privileged"
+  #   playbook: test.yml
 
 
 # whitelist

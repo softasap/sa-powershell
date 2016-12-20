@@ -12,7 +12,7 @@
 
 - name: Powershell | download package
   get_url:
-    url="https://github.com/PowerShell/PowerShell/releases/download/v{{powershell_version}}/powershell-{{powershell_version}}-1.el7.centos.x86_64.rpm"
+    url="https://github.com/PowerShell/PowerShell/releases/download/v{{powershell_version}}/powershell-{{powershell_version.replace('-','_')}}-1.el7.centos.x86_64.rpm"
     dest="/tmp/powershell.rpm"
   when: powershell_check_deb.rc == 1
   tags:
