@@ -1,0 +1,41 @@
+- name: Powershell | Check if my_package is installed
+  command: dpkg-query -W powershell
+  register: powershell_check_deb
+  become: yes
+  failed_when: powershell_check_deb.rc > 1
+  changed_when: powershell_check_deb.rc == 1
+  tags:
+    -powershell
+
+- name: Powershell | Install dependencies
+  apt: pkg="{{item}}"
+  with_items:
+    - "libunwind8"
+    - "libicu55"
+  become: yes
+  tags:
+    -powershell
+
+- name: Powershell | download package
+  get_url:
+    url="https://github.com/PowerShell/PowerShell/releases/download/v{{powershell_version}}/powershell_{{powershell_version}}-1ubuntu1.14.04.1_amd64.deb"
+    dest="/tmp/powershell.deb"
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version|int < 16
+  tags:
+    -dmd
+
+- name: Powershell | download package
+  get_url:
+    url="https://github.com/PowerShell/PowerShell/releases/download/v{{powershell_version}}/powershell_{{powershell_version}}-1ubuntu1.16.04.1_amd64.deb"
+    dest="/tmp/powershell.deb"
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version|int >= 16
+  tags:
+    -powershell
+
+
+- name: Powershell | install package
+  apt: deb="/tmp/powershell.deb"
+  become: true
+  when: powershell_check_deb.rc == 1
+  tags:
+    -powershell

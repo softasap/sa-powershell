@@ -1,0 +1,4 @@
+[submodule "roles/sa-powershell"]
+        path = roles/sa-powershell
+        url = https://github.com/softasap/sa-powershell.git
+
