@@ -3,24 +3,25 @@
 
 - name: Powershell | Check if my_package is installed
   command: rpm -q powershell
-  register: powershell_check_deb
+  register: powershell_check_rpm
   become: yes
-  failed_when: powershell_check_deb.rc > 1
-  changed_when: powershell_check_deb.rc == 1
+  failed_when: powershell_check_rpm.rc > 1
+  changed_when: powershell_check_rpm.rc == 1
   tags:
     -powershell
+    -skip_ansible_lint
 
 - name: Powershell | download package
   get_url:
-    url="https://github.com/PowerShell/PowerShell/releases/download/v{{powershell_version}}/powershell-{{powershell_version.replace('-','_')}}-1.el7.centos.x86_64.rpm"
+    url="https://github.com/PowerShell/PowerShell/releases/download/v{{ powershell_version }}/powershell-{{ powershell_version.replace('-','_') }}-1.el7.centos.x86_64.rpm"
     dest="/tmp/powershell.rpm"
-  when: powershell_check_deb.rc == 1
+  when: powershell_check_rpm.rc == 1
   tags:
     -powershell
 
 - name: Powershell | install package
   yum: name="/tmp/powershell.rpm" state="present"
   become: true
-  when: powershell_check_deb.rc == 1
+  when: powershell_check_rpm.rc == 1
   tags:
     -powershell
