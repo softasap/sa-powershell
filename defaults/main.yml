@@ -1,4 +1,4 @@
 ---
 # defaults file for sa-powershell
 
-powershell_version: "6.0.0-alpha.14"   
+powershell_version: "6.0.0-alpha.14"

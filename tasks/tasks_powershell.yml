@@ -12,7 +12,17 @@
     pkg:
       - "libunwind8"
       - "libicu55"
-  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version|int >= 16
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version is version_compare('16','>=') and ansible_distribution_major_version is version_compare('18','<')
+  become: yes
+  tags:
+    -powershell
+
+- name: Powershell | Install dependencies
+  apt:
+    pkg:
+      - "libunwind8"
+      - "libicu57"
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version is version_compare('18','>=')
   become: yes
   tags:
     -powershell
@@ -21,7 +31,7 @@
   get_url:
     url="https://github.com/PowerShell/PowerShell/releases/download/v{{ powershell_version }}/powershell_{{ powershell_version }}-1ubuntu1.14.04.1_amd64.deb"
     dest="/tmp/powershell.deb"
-  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version|int < 16
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version is version_compare('16','<')
   tags:
     -dmd
 
@@ -29,7 +39,7 @@
   get_url:
     url="https://github.com/PowerShell/PowerShell/releases/download/v{{ powershell_version }}/powershell_{{ powershell_version }}-1ubuntu1.16.04.1_amd64.deb"
     dest="/tmp/powershell.deb"
-  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version|int >= 16
+  when: powershell_check_deb.rc == 1 and ansible_distribution_major_version is version_compare('16','>=')
   tags:
     -powershell
 
